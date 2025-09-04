@@ -1,0 +1,192 @@
+\documentclass[]{interact}
+\usepackage[english]{babel}
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage{subfigure}% Support for small, `sub' figures and tables
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}% Bibliography support using natbib.sty
+\newcommand{\f}{\operatorname}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bs}{\boldsymbol}
+
+%\bibliographystyle{abbrvnat}
+
+
+\theoremstyle{plain}% Theorem-like structures
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{statement}{Statement}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{notation}{Notation}
+
+\begin{document}
+
+\articletype{ARTICLE TEMPLATE}
+
+\title{Posterior properties in censored lifetime models}
+
+\author{Pedro L. Ramos$^{\rm a}$$^{\ast}$\thanks{$^\ast$Corresponding author. Email: pedro.ramos@mat.uc.cl
+\vspace{6pt}}, Eduardo Ramos$^{b}$ and Jesus E.A. Quispe$^{a}$ 
+\\ \vspace{6pt} 
+$^{a}$ {Facultad de Matem\'aticas, Pontificia Universidad Cat\'olica
+de Chile, Santiago, Chile}
+$^{b}$ {Departamento de Estat\'istica, Universidade Federal do Amazonas, Manaus, Brazil} \\%\vspace{6pt} 
+}
+
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\begin{keywords}
+Bayesian Inference; Generalized Gamma Distribution; Objective Prior; Reference Prior.
+\end{keywords}
+
+\section{Introduction}
+Lifetime models are central to time-to-event analysis across reliability, medicine, climatology, and other fields, with flexible families such as the generalized gamma and its special cases (gamma, Weibull, Nakagami, generalized half-normal) accommodating diverse hazard shapes. In Bayesian practice, objective priors derived from formal rules \citep{kass1996selection} are attractive but often improper, risking improper posteriors that invalidate inference. Although objective priors have been proposed for many of these models \citep{miller1980bayesian,van2001bayes,ramos2017bayesian}, general, easily checked conditions for posterior propriety remain elusive—especially with ubiquitous right censoring \citep{northrop2016}.
+
+We provide a simple, distribution-agnostic route to assess posterior propriety for right-censored data under objective priors. Our main results show that (i) global impropriety in the non-censored setting persists under censoring, and (ii) sufficient conditions for propriety in the non-censored setting carry over by replacing the total sample size $n$ with the number of uncensored observations $m=\sum_{i=1}^n \delta_i$, provided at least two distinct failures are observed. Relying only on the likelihood–survival factorization, these results apply directly to the generalized gamma family and its submodels, yielding a practical checklist for verifying finiteness of the posterior normalizing constant and preventing pathological computation.
+
+The remainder of the paper is organized as follows. Section 2 presents transfer theorems that yield necessary and sufficient conditions for posterior propriety in lifetime models by using the corresponding non-censored results. Section 3 presents our conclusions.
+
+\section{Bayesian Analysis}
+
+Let $X_1,\ldots,X_n$ be a realization of an independent and identically distributed sample of a density $f(x|\theta)$ where $\theta$ is a parameter vector. Furthermore, assume that each individual in the sample has both a lifetime $X_i$ and a censoring time $C_i$. Additionally, the censoring times $C_i$ are random and independent of the lifetimes $X_i$, and their distribution is not influenced by the parameters. Under these conditions, the dataset can be described as $(t_i,\delta_i)$, where $T_i=\min(X_i,C_i)$ and $\delta_i=I(T_i\leq C_i)$ is an indicator function of the presence of censoring. The likelihood function in the presence of censoring is given by
+\begin{equation}\label{lposteriord1}
+L(\bs{\theta};\bs{t})=\prod_{i=1}^n f(t_i|\bs{\theta})^{\delta_i}\prod_{i=1}^n S(t_i|\bs{\theta})^{1-\delta_i},
+\end{equation}
+where $S(t|\boldsymbol{\theta})$ is the survival function.
+
+Given a prior distribution $\pi(\bs{\theta})$ for $\bs{\theta}$, the joint posterior distribution is equal to the product of the likelihood function and the prior distribution divided by a normalizing constant $d(\bs{t})$, resulting in
+
+\begin{equation}\label{posteriord1}
+p(\bs{\theta;t})=\frac{\pi(\bs{\theta})}{d(\bs{t})}\prod_{i=1}^n f(t_i|\bs{\theta})^{\delta_i}\prod_{i=1}^n S(t_i|\bs{\theta})^{1-\delta_i}
+\end{equation}
+where
+\begin{equation}\label{cposteriord1}
+d(\bs{t})=\int\limits_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^n f(t_i|\bs{\theta})^{\delta_i}\prod_{i=1}^n S(t_i|\bs{\theta})^{1-\delta_i}\, d\bs{\theta}
+\end{equation}
+and $\mathcal{A}$ is the parameter space of $\bs{\theta}$ and $t_i\in \mathcal{T}$, where here we suppose that $\mathcal{T}=(a,b)$ , for $a\in \overline{\mathbb{R}}$ and $b\in \overline{\mathbb{R}}$, where  $\overline{\mathbb{R}} = \mathbb{R}\cup \{-\infty, \infty\}$ denote the \textit{extended real number line}. Our main aim is to find necessary and sufficient conditions for this class of posterior to be proper, i.e., $d(\bs{t})<\infty$.
+  
+
+\subsection{Inferring properness results for the censored case from the non-censured case}
+
+In this subsection we show how every sufficient result for properness and sufficient result for non-properness of the posterior in the non-censured case leads to an analogous result for the censured case. First, for the improperness results we have:
+
+\begin{theorem}\label{theorem-21} Given $n\in \N$, if the posterior $p(\bs{\theta}|\bs{t})$ is improper for the non-censured case for all data $t_i\in \mathcal{T}$ then it is improper for the censured case as well for all $t_i\in \mathcal{T}$.
+\end{theorem}
+\begin{proof}  Suppose without loss of generality that $t_1,\cdots,t_n$ are ordered so that $\delta_i=0$ for $1\leq i\leq n-m$ and $\delta_i=1$ otherwise. Now, it follows from the definition of $S(T|\bs{\theta})$ that
+\begin{equation*}S(t|\bs{\theta}) =\int_{t}^b f(s|\bs{\theta})\,  ds
+\end{equation*}
+Thus, letting $\mathcal{I}=[t_1,b]\times \cdots \times [t_{n-m},b]$ and $\bs{s} = (s_1,\cdots,s_{n-m})$, since all functions under the integrand are non-negative, it follows from the Fubini-Tonelli Theorem that
+\begin{equation*} \prod_{i=1}^n S(t_i|\bs{\theta})^{1-\delta_i} = \int_{\mathcal{I}} \prod_{i=1}^{n-m} f(s_i|\bs{\theta})\,d\bs{s}.
+\end{equation*}
+Thus, denoting $s_i = t_i$ for $i=n-m+1,\cdots, n$ it follows from the Fubini-Tonelli Theorem that
+ \begin{equation*}
+ \begin{aligned}
+d(\bs{t})=  &\int\limits_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^n f(t_i|\bs{\theta})^{\delta_i}\prod_{i=1}^n S(t_i|\bs{\theta})^{1-\delta_i}\, d\bs{\theta}\\
+= &\int_{\mathcal{I}} \int_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=n-m+1}^n f(t_i|\bs{\theta})\prod_{i=1}^{n-m} f(s_i|\bs{\theta})\, d\bs{\theta}d\bs{s}\\
+=& \int_{\mathcal{I}}\int_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^n f(s_i|\bs{\theta})\, d\bs{\theta}d\bs{s}
+\end{aligned}
+\end{equation*}
+But since by hypothesis for all $s_i$ in the data domain we have
+\begin{equation*}\int_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^n f(s_i|\bs{\theta})\, d\bs{\theta} = \infty,
+\end{equation*}
+it follows from the above that
+\begin{equation*}d(\bs{t}) = \int_{\mathcal{I}} \infty\, d\bs{s} = \infty.
+\end{equation*}
+\end{proof}
+
+
+Now, the following result tells us that the translation for properness from the non-censured case to the censured case will constitute on exchanging $n$ in the restrictions on the original propositions for $m=\sum_{i=1}^n \delta_i$ in the new propositions:
+
+\begin{theorem}\label{theorem-22}  Under the non-censured case, suppose that $p(\bs{\theta}|\bs{t})$ is proper for all $n> k$ ($n\geq k$) as long as there are at least two distinct $t_i$. Then the following also holds:
+
+Under the general case, that is
+$\sum_{i=1}^n \delta_i = m$, the posterior $p(\bs{\theta}|\bs{t})$ will be proper for all $m> k$ ($m\geq k$, resp) as long as there are at least two distinct non-censored data $t_i$.
+\end{theorem}
+
+
+\begin{proof} Suppose without loss of generality that $t_1,\cdots,t_n$ are ordered so that $\delta_i=1$ for $1\leq i\leq m$ and $\delta_i=0$ otherwise. Now, since 
+\begin{equation*}S(t|\bs{\theta})=\int_t^b f(s|\bs{\theta})\, ds \leq \int_a^b f(s|\bs{\theta})\, ds = 1
+\end{equation*}
+for all $t\in \mathcal{T}$, it follows that
+ \begin{equation*}
+ \begin{aligned}
+d(\bs{t})=  &\int\limits_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^n f(t_i|\bs{\theta})^{\delta_i}\prod_{i=1}^n S(t_i|\bs{\theta})^{1-\delta_i}\, d\bs{\theta}\\
+\leq & \int_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^m f(t_i|\bs{\theta})\, d\bs{\theta}
+\end{aligned}
+\end{equation*}
+But since by hypothesis the data $t_1,\cdots,t_m$ are not all equal in value, by applying the hypothesis for the case $n=m$ it follows that
+\begin{equation*}\int_{\mathcal{A}}\pi(\bs{\theta})\prod_{i=1}^m f(t_i|\bs{\theta})\, d\bs{\theta}< \infty
+\end{equation*}
+concluding the proof.
+\end{proof}
+
+
+\section{Conclusion}
+
+This paper establishes a simple and general route to verify the propriety of Bayesian posteriors for widely used lifetime models under random right censoring. The two main results show that (i) any global impropriety found for the non-censored case is inherited by the censored case (Theorem~\ref{theorem-21}), and (ii) any sufficient condition for propriety in the non-censored setting transfers to the censored setting by replacing the total sample size $n$ with the number of uncensored observations $m=\sum_{i=1}^n \delta_i$, provided there are at least two distinct failure times (Theorem~\ref{theorem-22}). In practice, this yields a clear checklist: one can assess whether an objective (often improper) prior leads to a proper posterior by examining the corresponding non-censored result and then applying the $n\mapsto m$ substitution.
+
+Because the arguments do not rely on distribution-specific algebra beyond the likelihood–survival factorization, the conclusions apply directly to the generalized gamma family and its submodels (including gamma, Weibull, Nakagami and generalized half-normal), thereby unifying and extending scattered case-by-case proofs in the literature. The proposed conditions give analysts a transparent way to verify that the posterior normalizing constant $d(\bs t)$ is finite before engaging in computation, helping to prevent pathological MCMC behavior caused by improper posteriors.
+
+
+\section*{Disclosure statement}
+
+No potential conflict of interest was reported by the author(s)
+
+\section*{Acknowledgements}
+
+ The research of 
+ Eduardo Ramos is supported by FAPESP
+(Grant number: 2023/13249-9) and CNPq (Grant number:  151231/2023-0). The research of Francisco Louzada is supported by FAPESP (Grant number: 2013/07375-0) and CNPq (Grant number: 308849/2021-3).
+
+\bibliographystyle{tfs}
+
+\bibliography{reference}
+
+\appendix
+
+
+
+\section{ }
+
+
+\section{Appendix A:}
+
+\subsection{Proof of Corollary \ref{maintheproper}}\label{ccorolamab3}
+
+From (\ref{equatinpropi}) and by the asymptotic relations (\ref{digammatoinfty}) we have that 
+\begin{equation*}
+\phi^2\psi^{'}(\phi)+\phi-1 =2\phi-\frac{1}{2}+o\left(1\right) \underset{\phi\to \infty}{\propto} \phi
+\end{equation*}
+which together with equation (\ref{eqaux2}) implies that
+\begin{equation*}
+\sqrt{\phi^2\psi^{'}(\phi)+\phi-1}\underset{\phi\to 0^{+}}{\propto}  \sqrt{\phi}\ \mbox{ and }\ \sqrt{\phi^2\psi^{'}(\phi)+\phi-1}\underset{\phi\to \infty}{\propto} \sqrt{\phi}.
+\end{equation*}
+Hence, from the above proportionalities we have that
+\begin{equation*}
+\sqrt{\frac{\phi^2\psi'(\phi)^2-\psi'(\phi)-1}{\phi^2\psi'(\phi)+\phi-1}} \underset{\phi\to 0^{+}}{\propto}\frac{1}{\sqrt{\phi}} \ \ \mbox{ and } \ \ \sqrt{\frac{\phi^2\psi'(\phi)^2-\psi'(\phi)-1}{\phi^2\psi'(\phi)+\phi-1}} \underset{\phi\to \infty}{\propto} \frac{1}{\sqrt{\phi^3}}.
+\end{equation*}
+Therefore, Theorem \ref{fundteo1} can be applied with $k= q_0 = q_\infty = -1$, $r_0 = -\frac{1}{2}$ and $r_\infty= -\frac{3}{2}$ where $k=-1$, $q_\infty < r_0$ and $2r_\infty+1 < q_0$, and therefore $\pi_{12}(\alpha,\mu,\phi)$ leads to a proper posterior for every $n> -q_0 = 1$.
+
+In order to prove that the higher moments are improper suppose  $\alpha^q\phi^r\mu^j\pi(\bs{\theta})$ leads to a proper posterior for $r\in\N$, $q\in\N$ and $k\in\N$. By Theorem \ref{fundteo3} we have $j= 0$, $q+q_\infty<r+r_0$, $2(r+r_\infty) \leq q+q_0$ and $n\geq -q_0$, i.e., $k=0$ and $2r-1< q< r+\frac{1}{2}$. The inequality $2r-1<r+\frac{1}{2}$ leads to $r<\frac{3}{2}$, i.e., $r=0$ or $r=1$. By the previous inequality, the case where $r=0$ leads to $-1<q<\frac{1}{2}$, that is, $q=0$. Now, for $r=1$ we have the inequality $1<q<\frac{3}{2}$ which do not have integer solution. Therefore, the only possible values for which $\alpha^q\phi^r\mu^j\pi(\bs{\theta})$ is proper is $q=r=j=0$, that is, the higher moments are improper. 
+
+\vspace{1cm}
+
+\end{document}
+
